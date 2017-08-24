@@ -1,11 +1,11 @@
 ---
 layout: post
 title: golang net timeout
-category: golang
+tags: go
 comments: true
 ---
 
-##golang net timeout（绑定端口时问题）
+### golang net timeout（绑定端口时问题）
 
 
 为了防止程序被多次叫起来，就给程序绑定了端口

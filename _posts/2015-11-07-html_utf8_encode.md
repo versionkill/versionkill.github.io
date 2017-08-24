@@ -1,11 +1,11 @@
 ---
 layout: post
 title: golang 处理 html UTF-8编码
-category: golang
+tags: go
 comments: true
 ---
 
-##golang 处理 html UTF-8编码
+### golang 处理 html UTF-8编码
 
 常常遇到URl中带%或者十六进制组成的ascii中文字符串中夹带%时，需要直接将其转化为中文时，使用net/url包中的
 

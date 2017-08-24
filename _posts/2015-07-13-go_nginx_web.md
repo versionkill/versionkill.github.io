@@ -1,15 +1,15 @@
 ---
 layout: post
 title: golang Nginx+fcgi构建WEB
-category: golang
+tags: go
 comments: true
 ---
 
-#一、安装Nginx
+### 一、安装Nginx
 
 注意关联包问题
 
-#二、修改nginx.conf 
+### 二、修改nginx.conf 
 
 vi /etc/nginx/nginx.conf
 
@@ -32,7 +32,7 @@ server {
 }
 ```
 
-#三、在nginx.conf同一目录下创建并修改fcgi.conf配置文件
+### 三、在nginx.conf同一目录下创建并修改fcgi.conf配置文件
 
 nginx配置Fastcgi解析时会调用fastcgi_params配置文件来传递服务器变量，这样CGI中可以获取到这些变量的值。默认传递以下变量： 
 
@@ -62,7 +62,7 @@ fastcgi_param  REDIRECT_STATUS    200;
 
 注：这边其实和fastcgi_params一样
 
-#四、修改好配置后，重启nginx 
+### 四、修改好配置后，重启nginx 
 
   *1、进入/usr/sbin
   
@@ -89,7 +89,7 @@ kill -HUP `cat /usr/local/nginx/logs/nginx.pid`
 
 或直接先kill掉再启动
 
-#五、编写golang构建web响应端
+### 五、编写golang构建web响应端
 
 ```golang
 package main
@@ -112,7 +112,7 @@ func main() {
 }
 ```
 
-#六、查看nginx、fcgiTest状态
+### 六、查看nginx、fcgiTest状态
 
 ```
 #netstat -ntlp

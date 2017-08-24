@@ -1,17 +1,17 @@
 ---
 layout: post
 title: golang cross compile
-category: golang
+tags: go
 comments: true
 ---
 
-#go1.5以前的版本的交叉编译
+### go1.5以前的版本的交叉编译
 
 前言：
 
 go1.5以前版本的交叉编译，无法实现直接交叉编译，需要先配置构建好要目标版本环境，go1.5以后则无需再构建环境了，直接可以编译，内部会自动构建，所以第一次会比较慢。
 
-##一、各平台的GOOS和GOARCH参考
+### 一、各平台的GOOS和GOARCH参考
 
 OS ARCH OS version
 
@@ -22,7 +22,7 @@ freebsd 386 / amd64 >= FreeBSD 7
 windows 386 / amd64 >= Windows 2000
 ```
 
-##二、linux 下的交叉编译
+### 二、linux 下的交叉编译
 
 ```
 $ cd /usr/local/go/src 
@@ -106,7 +106,7 @@ CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build sina.go
 
 注意：有C代码不能直接交叉编译，需要真实环境编译，现在go1.5说是移除C，只是编译器、代码库从C转GO，对于C库的编译，还得需要CGO，只是除了C代码的其他部分都不需要C编译器了。
 
-##三、windows下的交叉编译：
+### 三、windows下的交叉编译：
 
 比如编译一个linux-arm版本的出来。
 
@@ -130,7 +130,7 @@ make.bat --no-clean 2>&1
 4.  如果你用到的package 需要编译c 代码，而跨平台编译不一定行得通。这个时候你可以现在对应平台上把package编译好（使用虚拟机），然后把package 静态文件copy 过来，到windows下完成整个程序最后的link 工作。
 
 
-##四、fessbsd下的交叉编译
+## 四、fessbsd下的交叉编译
 
 设置GOPATH、GOROOT
 
