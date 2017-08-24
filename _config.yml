@@ -7,7 +7,7 @@ description: ji390801797@sina.com
 avatarTitle: john
 # 头像里面的描述
 avatarDesc: python & golang
-url: ""
+url: "https://versionkill.github.io"
 
 # Comment
 comment:
@@ -17,10 +17,10 @@ comment:
 
 # Social
 social:
-    weibo: hanjunqiang
-    github: xiaohange
+    weibo: versionkill
+    github: versionkill
     # twitter: 
-    mail: 532167805@qq.com
+    mail: ji390801797@sina.com
 
 # 百度统计 
 # 使用博客模板请去掉或者更换 id 
