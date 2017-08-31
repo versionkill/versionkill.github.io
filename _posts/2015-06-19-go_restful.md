@@ -18,7 +18,7 @@ comments: true
 	    
 	    Poster =〉 只要有xml就xml   （为什么？？？）
 	    
-	@Consumes 标注可接受的MIME媒体类型
+        @Consumes 标注可接受的MIME媒体类型
 
         @PathParam、@QueryParam、@HeaderParam @CookieParam 分别标注方法的参数来自HTTP请求的不同位置。
 
