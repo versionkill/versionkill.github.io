@@ -14,9 +14,9 @@ comments: true
 
             produces(xml,json)  
 	    
-	    CMD => 谁在前就选谁
+            CMD => 谁在前就选谁
 	    
-	    Poster =〉 只要有xml就xml   （为什么？？？）
+            Poster =〉 只要有xml就xml   （为什么？？？）
 	    
         @Consumes 标注可接受的MIME媒体类型
 
