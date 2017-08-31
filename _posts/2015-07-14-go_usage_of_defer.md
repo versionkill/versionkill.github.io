@@ -1,0 +1,74 @@
+---
+layout: post
+title: golang defer的使用
+category: tools
+comments: true
+---
+
+### 一、defer函数结束时调用
+
+```go
+    defer func（）{
+          ......
+    }（）
+```
+
+### 二、defer在os.Exit()后不会起作用
+  
+如果有需要可以使用return
+
+### 三、异常与捕获
+
+Golang 有2个内置的函数 panic() 和 recover()，用以报告和捕获运行时发生的程序错误，与 error 不同，panic-recover 一般用在函数内部。
+一定要注意不要滥用 panic-recover，可能会导致性能问题，一般只在未知输入和不可靠请求时使用。
+golang 的错误处理流程：当一个函数在执行过程中出现了异常或遇到 panic()，正常语句就会立即终止，然后执行 defer 语句，再报告异常信息，
+最后退出 goroutine。如果在 defer 中使用了 recover() 函数,则会捕获错误信息，使该错误信息终止报告。
+
+示例：
+```go
+package main
+
+import (
+	"log"
+	"strconv"
+)
+
+//捕获因未知输入导致的程序异常
+func catch(nums ...int) int {
+	defer func() {
+		if r := recover(); r != nil {
+			log.Println("[E]", r)
+		}
+	}()
+	return nums[1] * nums[2] * nums[3] //index out of range
+}
+
+//主动抛出 panic，不推荐使用，可能会导致性能问题
+func toFloat64(num string) (float64, error) {
+	defer func() {
+		if r := recover(); r != nil {
+			log.Println("[W]", r)
+		}
+	}()
+	if num == "" {
+		panic("param is null") //主动抛出 panic
+	}
+	return strconv.ParseFloat(num, 10)
+}
+
+func main() {
+	catch(2, 8)
+	toFloat64("")
+}
+
+```
+
+输出如下：
+
+```
+2014/11/01 22:54:23 [E] runtime error: index out of range
+2014/11/01 22:54:23 [W] param is null
+```
+
+### 四、个人理解
+  defer执行顺序是倒序的，这就像一个栈，每个defer都是入栈，等结束的时候开始一个个的出栈，所以顺序是逆序的，大概就是这个意思吧。。。
