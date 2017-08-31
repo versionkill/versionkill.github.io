@@ -10,25 +10,25 @@ comments: true
 
 ### 一、prodece，consumes，xxxxparam：
 
-	@Produces 标注返回的MIME媒体信息：
+        @Produces 标注返回的MIME媒体信息：
 
-    		produces(xml,json)  
-
-    		CMD => 谁在前就选谁
-
-    		Poster =〉 只要有xml就xml   （为什么？？？）
-
+            produces(xml,json)  
+	    
+	    CMD => 谁在前就选谁
+	    
+	    Poster =〉 只要有xml就xml   （为什么？？？）
+	    
 	@Consumes 标注可接受的MIME媒体类型
 
-	@PathParam、@QueryParam、@HeaderParam @CookieParam 分别标注方法的参数来自HTTP请求的不同位置。
+        @PathParam、@QueryParam、@HeaderParam @CookieParam 分别标注方法的参数来自HTTP请求的不同位置。
 
-	@PathParam 来自URL的路径
+        @PathParam 来自URL的路径
 
-	@QueryParam 来自URL的查询参数
+        @QueryParam 来自URL的查询参数
 
-	@HeaderParam 来自请求头信息
+        @HeaderParam 来自请求头信息
 
-	@CookieParam 来自HTTP请求的cookie	
+        @CookieParam 来自HTTP请求的cookie	
 
 ### 二、CURD：GET、POST、PUT、DELETE、HEAD、OPTIONS：
 
