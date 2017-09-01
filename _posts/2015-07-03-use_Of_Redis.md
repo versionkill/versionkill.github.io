@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Usage Of Redis
-category: tools
+tags: tools
 comments: true
 ---
 
