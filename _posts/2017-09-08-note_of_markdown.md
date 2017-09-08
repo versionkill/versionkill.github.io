@@ -120,6 +120,15 @@ __asdasdassdfsdfs__
 
 `` ``` ``
 
+	```go
+	package main
+	import(
+		"fmt"
+	)
+	func main(){
+		fmt.Println("Hello World")
+	}
+	```
 
 效果如下：
 
