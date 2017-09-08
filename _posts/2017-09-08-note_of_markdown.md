@@ -103,22 +103,7 @@ __asdasdassdfsdfs__
 
 # 四、代码
 
-### 1.代码段
-
-`` ```go ``
-
-``package main``
-
-``import("fmt")``
-
-
-``func main(){``
-
-``  fmt.Println("Hello World")``
-
-``}``
-
-`` ``` ``
+### 1.代码段,使用三个`` ` ``加对应语言的标识,或者直接将代码整体加一个缩进4空格或者tab
 
 	```go
 	package main
