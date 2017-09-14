@@ -61,6 +61,93 @@ func EchoNumber(i int) {
 
 那么结果又是如何呢？
 
+```go
+package main
+
+import (
+	"fmt"
+	"sync"
+	"runtime"
+)
+
+func main() {
+	runtime.GOMAXPROCS(1)
+	var wg sync.WaitGroup
+
+	for i := 0; i < 5; i = i + 1 {
+		wg.Add(1)
+		go func(n int) {
+			// defer wg.Done()
+			defer wg.Add(-1)
+			EchoNumber(n)
+		}(i)
+	}
+
+	wg.Wait()
+}
+
+func EchoNumber(i int) {
+	fmt.Println(i)
+}
+```
+
+输出：
+
+```
+4
+0
+1
+2
+3
+```
+
 结果总是先输出最后一个线程，然后才有序地输出其他线程（前面所有线程），因为设置了程序运行使用最大CPU数量为1，所以有序也很容易理解，
 但是为什么总是先输出最后一个线程？？？
+
+
+如果给EchoNumber加一个sleep时间结果又是怎样的呢？
+
+```go
+package main
+
+import (
+	"fmt"
+	"sync"
+	"time"
+	"runtime"
+)
+
+func main() {
+	runtime.GOMAXPROCS(1)
+	var wg sync.WaitGroup
+
+	for i := 0; i < 5; i = i + 1 {
+		wg.Add(1)
+		go func(n int) {
+			// defer wg.Done()
+			defer wg.Add(-1)
+			EchoNumber(n)
+		}(i)
+	}
+
+	wg.Wait()
+}
+
+func EchoNumber(i int) {
+	time.Sleep(3e9)
+	fmt.Println(i)
+}
+```
+
+输出:
+
+```
+0
+4
+3
+2
+1
+```
+
+结果会是跟上面的结果相反，总是先输出第一个线程，然后再倒序输出每个线程。
 
