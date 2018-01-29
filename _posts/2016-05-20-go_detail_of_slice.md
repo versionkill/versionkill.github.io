@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 关于go数组的一些细节（持续更新）
+title: 关于go的一些细节（持续更新）
 tags: go
 comments: true
 ---
