@@ -16,6 +16,8 @@ comments: true
 #### 2、token值是可以直接存入的
 
 #### 3、设置cookie
+
+```go
 cookie2:=&http.Cookie{
             Name:"adminname",
             Value:tokenString,
@@ -24,8 +26,11 @@ cookie2:=&http.Cookie{
             //Expires: time.Unix(time.Now().Unix()+600,
         }
 http.SetCookie(w,cookie2)
+```
 
 #### 4、获取cookie
+
+```go
 c1, err := r.Cookie("adminname")
 if err != nil {
 	log.Printf(err.Error())
@@ -38,6 +43,7 @@ if err != nil {
 return
 }
 tokenString := c1.Value
+```
 
 #### 5、特别注意
 w.WriteHeader(http.StatusOK)
