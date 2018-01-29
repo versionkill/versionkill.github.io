@@ -5,15 +5,17 @@ tags: go
 comments: true
 ---
 
-首先，关于session与jwt：
+### 首先，关于session与jwt
 <http://blog.csdn.net/pkueecser/article/details/50267125>
 
 
-1、首先存入cookie的value值得注意是否有分号，等于号之类的特殊符号
+### 遇到的问题记录
 
-2、token值是可以直接存入的
+#### 1、首先存入cookie的value值得注意是否有分号，等于号之类的特殊符号
 
-3、设置cookie
+#### 2、token值是可以直接存入的
+
+#### 3、设置cookie
 cookie2:=&http.Cookie{
             Name:"adminname",
             Value:tokenString,
@@ -23,7 +25,7 @@ cookie2:=&http.Cookie{
         }
 http.SetCookie(w,cookie2)
 
-4、获取cookie
+#### 4、获取cookie
 c1, err := r.Cookie("adminname")
 if err != nil {
 	log.Printf(err.Error())
@@ -37,6 +39,6 @@ return
 }
 tokenString := c1.Value
 
-5、特别注意
+#### 5、特别注意
 w.WriteHeader(http.StatusOK)
 如果先返回状态status，再set cookie，可能导致cookie无法被正常解析获取
