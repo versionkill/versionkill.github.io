@@ -1,18 +1,21 @@
 ---
 layout: post
-title: golang 并发
+title: golang goroutine 及其同步问题
 tags: go
 comments: true
 ---
 
-### goroutine并发
+### goroutine 同步
 
-* waitgropup
-* channel
-* select
+goroutine是Go并行设计的核心。goroutine说到底其实就是线程，但是它比线程更小，十几个goroutine可能体现在底层就是五六个线程。Go语言内部帮你实现了这些goroutine之间的内存共享。执行goroutine只需极少的栈内存(大概是4~5KB)，当然会根据相应的数据伸缩。也正因为如此，可同时运行成千上万个并发任务。goroutine比thread更易用、更高效、更轻便。 
+—–摘自《Go Web编程》
+
+goroutine 运行在相同的地址空间中，因此访问共享内存必须做好同步，
+
+* sync waitgropup
+* channel 
 
 ### runtime包中有几个处理goroutine的函数
-
 
 * Goexit
 
@@ -176,7 +179,7 @@ func EchoNumber(i int) {
 
 ### channel
 
-goroutine 运行在相同的地址，因此访问共享内存必须做好同步，go提供了很好的通讯机制channel，可以实现groutine之间的数据通讯。
+go提供了很好的通讯机制channel，可以实现groutine之间的数据通讯。
 
 channel和map一样，使用前必须先make，否则初始为nil，在一个nil的channel上发送和接收操作会被永久阻塞。
 
@@ -227,3 +230,89 @@ fatal error: all goroutines are asleep - deadlock!
 
 结果是出现异常了，因为没有分配缓冲区，所有chan处理完单线程的sum后已经返回了，也就是close了，这时候再去发送或者接收就会出现异常，而如果都是开启的groutine，则不需要缓冲区，因为本身
 
+
+### select
+
+select可以监控多个channel，默认是阻塞状态，当某个channel接收或发送数据时，case的语句开始执行。
+
+channel 用之前需要跟map一样需要make ，否则初始为nil，在一个nil的channel上发送和接收操作会被永久阻塞。
+
+```go
+package main
+
+import (
+	"fmt"
+)
+
+func main() {
+	ch := make(chan int)
+	done := make(chan int)
+
+	for i := 0; i < 3; i++ {
+		go func(idx int) {
+
+			select {
+			case ch <- (idx + 1) * 2:
+				fmt.Println(idx, "sent result")
+			case <-done:
+				fmt.Println(idx, "exiting")
+
+			}
+
+		}(i)
+	}
+        count:=2
+	for i := 0; i < count; i++ {
+		fmt.Println("result:", <-ch)
+	}
+
+	for i := 0; i < 3-count; i++ {
+		done <- i
+	}
+}
+```
+
+#### select实现超时处理
+
+```
+package main
+
+import (
+	"fmt"
+	"time" 
+)
+
+func main() {
+    c := make(chan int)
+    o := make(chan bool)
+    go func() {
+        for {
+            select {
+                case v := <- c:
+                    fmt.Println(v)
+                case <- time.After(2 * time.Second):
+                    fmt.Println("timeout")
+                    o <- true
+                    break
+            }
+        }
+    }()
+    <- o    //会等o输出才会结束，有几个<-o 就会去尝试几次超时判断
+}
+```
+
+select case 是并排关系，没有固定的优先级，当多个channel同时接收或发送数据时，select执行顺序是随机的。想要优先某个case就利用default 及嵌套select实现优先case。
+
+```go
+for{
+    select{
+        case <-case1:
+            pass1
+        default:
+            select{
+                   case <-case2:
+                        pass2
+             }   
+    }
+}
+```
