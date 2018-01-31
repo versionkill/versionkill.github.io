@@ -136,17 +136,14 @@ func EchoNumber(i int) {
 结果总是先输出最后一个线程，然后才有序地输出其他线程（前面所有线程），因为设置了程序运行使用最大CPU数量为1，所以有序也很容易理解，
 但是为什么总是先输出最后一个线程？？？
 
+猜测：会不会waitgroup添加线程进一个先进先出队列，添加到最后一个线程不放进去，直接运行它了呢，然后才逐个运行其他线程，所以会出现总是先运行最后一个添加的线程，然后才有序的执行之前添加的线程。
+
+试着在EchoNumber加一个time sleep,则输出跟上面的结果完全反过来，可以看出waitgroup的执行顺序跟for循环及add并没有必然关系。但waitgroup确实是可以实现线程的同步，保证goroutine全部执行完成。
+
+
 接下来试着不用waitgroup，开启多个groutine后，用sleep来等待所有线程结束:
 
 ```go
-package main
-
-import (
-	"fmt"
-	"runtime"
-	"time"
-)
-
 func main() {
 	runtime.GOMAXPROCS(1)
 
@@ -157,10 +154,6 @@ func main() {
 	}
 
     time.Sleep(1e9)
-}
-
-func EchoNumber(i int) {
-	fmt.Println(i)
 }
 ```
 
@@ -174,7 +167,7 @@ func EchoNumber(i int) {
 4
 ```
 
-结果输出总是按照顺序输出线程结果，可以看出waitgroup添加线程会先阻塞这些线程，添加到最后一个线程，最后一个线程并没有去阻塞，而是让其运行，然后才逐个运行其他线程，所以会出现总是先运行最后一个添加的线程，然后才有序的执行之前添加的线程，而用sleep去做主动等待时，只是单纯地运行多个groutine，相当于单线程而已，所以在执行同样复杂性同样等待时间的function时，会有序地输出。
+sleep去做主动等待时，只是单纯地运行多个groutine，相当于单线程而已，所以在执行同样复杂性同样等待时间的function时，会有序地输出。
 
 
 ### channel
