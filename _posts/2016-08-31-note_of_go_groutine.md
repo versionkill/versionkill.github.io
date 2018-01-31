@@ -267,7 +267,7 @@ func main() {
 
 #### select实现超时处理
 
-```
+```go
 package main
 
 import (
